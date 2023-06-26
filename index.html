@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculadora</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .calculator { width: 300px; margin: 0 auto; }
+    .result { margin-bottom: 10px; text-align: right; padding: 5px; background-color: #f8f9fa; }
+    .button { width: 70px; height: 70px; }
+    .title { text-align: center; }
+    /* Estilos do modo dark */
+    body.dark-mode { background-color: #222; color: #fff; }
+    body.dark-mode .result { background-color: #383838; }
+    body.dark-mode .button { background-color: #555; color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="container mt-4">
+    <h1 class="title">Calculadora</h1>
+    <button class="btn btn-secondary mb-3" onclick="toggleDarkMode()">Alternar Modo</button>
+    <div class="calculator">
+      <div class="result" id="result">0</div>
+      <div class="row">
+        <button class="col button btn btn-light" onclick="clearResult()">C</button>
+        <button class="col button btn btn-light" onclick="deleteDigit()">&#9003;</button>
+        <button class="col button btn btn-light" onclick="appendOperator('/')">/</button>
+      </div>
+      <div class="row">
+        <button class="col button btn btn-light" onclick="appendDigit('7')">7</button>
+        <button class="col button btn btn-light" onclick="appendDigit('8')">8</button>
+        <button class="col button btn btn-light" onclick="appendDigit('9')">9</button>
+        <button class="col button btn btn-light" onclick="appendOperator('*')">*</button>
+      </div>
+      <div class="row">
+        <button class="col button btn btn-light" onclick="appendDigit('4')">4</button>
+        <button class="col button btn btn-light" onclick="appendDigit('5')">5</button>
+        <button class="col button btn btn-light" onclick="appendDigit('6')">6</button>
+        <button class="col button btn btn-light" onclick="appendOperator('-')">-</button>
+      </div>
+      <div class="row">
+        <button class="col button btn btn-light" onclick="appendDigit('1')">1</button>
+        <button class="col button btn btn-light" onclick="appendDigit('2')">2</button>
+        <button class="col button btn btn-light" onclick="appendDigit('3')">3</button>
+        <button class="col button btn btn-light" onclick="appendOperator('+')">+</button>
+      </div>
+      <div class="row">
+        <button class="col-6 button btn btn-light" onclick="appendDigit('0')">0</button>
+        <button class="col-3 button btn btn-light" onclick="appendDecimal('.')">.</button>
+        <button class="col-3 button btn btn-primary" onclick="calculate()">=</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let result = document.getElementById('result');
+    let expression = '';
+
+    function appendDigit(digit) {
+      expression += digit;
+      updateResult();
+    }
+
+    function appendOperator(operator) {
+      expression += operator;
+      updateResult();
+    }
+
+    function appendDecimal(decimal) {
+      if (!expression.includes(decimal)) {
+        expression += decimal;
+        updateResult();
+      }
+    }
+
+    function deleteDigit() {
+      expression = expression.slice(0, -1);
+      updateResult();
+    }
+
+    function clearResult() {
+      expression = '';
+      updateResult();
+    }
+
+    function calculate() {
+      try {
+        const resultValue = eval(expression);
+        expression = String(resultValue);
+        updateResult();
+      } catch (error) {
+        expression = '';
+        updateResult('Erro');
+      }
+    }
+
+    function updateResult(value = expression) {
+      result.textContent = value;
+    }
+
+    function toggleDarkMode() {
+      const body = document.body;
+      body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>
